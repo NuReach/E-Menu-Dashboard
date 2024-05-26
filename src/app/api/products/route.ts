@@ -44,7 +44,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
         const body = await request.json();
 
-        const { name, description, price, cost, status, discount, sku, userId } = body;
+        const { name, description, price, cost, status, discount, sku, userId, imageUrl, category } = body;
 
         if (!name || price == null || cost == null || !sku || userId == null) {
             return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
@@ -58,6 +58,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 cost,
                 status: status != null ? status : true,
                 discount: discount != null ? discount : 0.0,
+                imageUrl: imageUrl !== null ? imageUrl : "no image",
+                category: category !== null ? category : "no categoru",
                 sku,
                 userId,
             },

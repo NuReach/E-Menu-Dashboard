@@ -24,6 +24,8 @@ model Product {
   status      Boolean  @default(true)
   discount    Float    @default(0.0)
   sku         String   @unique
+  imageUrl    String?  
+  category    String?  
   userId      Int
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())

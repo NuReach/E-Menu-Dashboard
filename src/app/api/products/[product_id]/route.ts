@@ -66,7 +66,7 @@ export async function PUT(request: NextRequest, context: any): Promise<NextRespo
             return NextResponse.json({ message: 'Product not found' }, { status: 404 });
         }
 
-        const { name, description, price, cost, status, discount, sku, userId } = body;
+        const { name, description, price, cost, status, discount, sku,imageUrl, category, userId } = body;
         
         if (sku) {
             const skuConflict = await prisma.product.findUnique({
@@ -91,6 +91,8 @@ export async function PUT(request: NextRequest, context: any): Promise<NextRespo
                 cost: cost !== undefined ? cost : existingProduct.cost,
                 status: status !== undefined ? status : existingProduct.status,
                 discount: discount !== undefined ? discount : existingProduct.discount,
+                imageUrl: imageUrl !== undefined ? imageUrl : existingProduct.imageUrl,
+                category: category !== undefined ? category : existingProduct.category,
                 sku: sku !== undefined ? sku : existingProduct.sku,
                 userId: userId !== undefined ? userId : existingProduct.userId,
             },
