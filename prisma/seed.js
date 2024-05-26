@@ -1,53 +1,51 @@
-// prisma/seed.js
+const { PrismaClient } = require("@prisma/client");
 
-const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.product.createMany({
-    data: [
-      {
-        name: 'Product 1',
-        description: 'Description for product 1',
-        price: 19.99,
-        cost: 15.00,
-        discount: 2.0,
-        sku: 'PROD001',
-      },
-      {
-        name: 'Product 2',
-        description: 'Description for product 2',
-        price: 29.99,
-        cost: 20.00,
-        discount: 3.0,
-        sku: 'PROD002',
-      },
-      {
-        name: 'Product 3',
-        description: 'Description for product 3',
-        price: 39.99,
-        cost: 25.00,
-        discount: 5.0,
-        sku: 'PROD003',
-      },
-      {
-        name: 'Product 4',
-        description: 'Description for product 4',
-        price: 49.99,
-        cost: 30.00,
-        discount: 4.0,
-        sku: 'PROD004',
-      },
-      {
-        name: 'Product 5',
-        description: 'Description for product 5',
-        price: 59.99,
-        cost: 40.00,
-        discount: 10.0,
-        sku: 'PROD005',
-      },
-    ],
+  // Create initial users
+  const user1 = await prisma.user.create({
+    data: {
+      name: 'Alice',
+      password: 'alicepassword',
+    },
   });
+
+  const user2 = await prisma.user.create({
+    data: {
+      name: 'Bob',
+      password: 'bobpassword',
+    },
+  });
+
+  // Create initial products
+  const product1 = await prisma.product.create({
+    data: {
+      name: 'Product 1',
+      description: 'Description for product 1',
+      price: 100.0,
+      cost: 60.0,
+      status: true,
+      discount: 10.0,
+      sku: 'SKU001',
+      userId: user1.id,
+    },
+  });
+
+  const product2 = await prisma.product.create({
+    data: {
+      name: 'Product 2',
+      description: 'Description for product 2',
+      price: 200.0,
+      cost: 120.0,
+      status: true,
+      discount: 20.0,
+      sku: 'SKU002',
+      userId: user2.id,
+    },
+  });
+
+  console.log({ user1, user2, product1, product2 });
 }
 
 main()
