@@ -10,7 +10,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
   }
 
-
   const body = await request.json(); 
 
   if (!body.name || !body.password) {

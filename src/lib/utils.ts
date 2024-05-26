@@ -24,7 +24,7 @@ export function relativeDate(from: Date) {
 
 
 export function generateToken(userId: number) {
-  return jwt.sign({ userId }, SECRET_KEY, { expiresIn: '1h' });
+  return jwt.sign({ userId }, SECRET_KEY, { expiresIn: '12h' });
 }
 
 export async function hashPassword(password: string) {

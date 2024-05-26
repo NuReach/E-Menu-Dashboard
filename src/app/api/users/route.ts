@@ -36,7 +36,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     });
 
     const totalCount = await prisma.user.count(); 
-    return NextResponse.json({ users, totalCount , user }, { status: 200 });
+    return NextResponse.json({ users, totalCount }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
@@ -50,19 +50,19 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
 
     //Authentication
-    const authHeader = request.headers.get('authorization');
+    // const authHeader = request.headers.get('authorization');
 
-    if (!authHeader) {
-        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    }
+    // if (!authHeader) {
+    //     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    // }
     
-    const token = authHeader.split(' ')[1];
+    // const token = authHeader.split(' ')[1];
     
-    if (!await verifyToken(token)) {
-        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    }
+    // if (!await verifyToken(token)) {
+    //     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    // }
   
-    const user = await verifyToken(token);
+    // const user = await verifyToken(token);
 
 
     try {
