@@ -12,6 +12,7 @@
   "dependencies": {
     "@clerk/nextjs": "^5.1.2",
     "@prisma/client": "^5.14.0",
+    "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@vercel/blob": "^0.23.3",
     "bcrypt": "^5.1.1",
