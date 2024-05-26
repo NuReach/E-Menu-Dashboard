@@ -46,12 +46,17 @@ export async function PUT(request: NextRequest, context: any): Promise<NextRespo
     }
     
     const token = authHeader.split(' ')[1];
-    if (!await verifyToken(token)) {
+
+    const user = await verifyToken(token);
+    
+
+    if (!user) {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
     try {
         const productIdNumber = parseInt(product_id, 10);
+
         if (isNaN(productIdNumber)) {
             return NextResponse.json({ message: 'Invalid product ID' }, { status: 400 });
         }
@@ -61,6 +66,10 @@ export async function PUT(request: NextRequest, context: any): Promise<NextRespo
                 id: productIdNumber,
             },
         });
+
+        if (existingProduct?.userId !== user.userId) {
+            return NextResponse.json({ message: 'No Permission To Update' }, { status: 401 });
+        }
 
         if (!existingProduct) {
             return NextResponse.json({ message: 'Product not found' }, { status: 404 });
