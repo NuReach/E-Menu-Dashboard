@@ -40,9 +40,10 @@ export async function verifyPassword(password: string, hashedPassword: string) {
 interface Jwt {
   userId: number;
   exp: number;
+  iat : number;
 }
 
-export async function verifyToken(token: string): Promise<object | null> {
+export async function verifyToken(token: string): Promise<Jwt | null> {
   try {
     const decoded = jwt.verify(token, SECRET_KEY) as Jwt;
 
