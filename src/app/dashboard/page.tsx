@@ -13,7 +13,7 @@ export default function Page() {
     <div>
         <Navbar />
         <div className='p-6 w-full flex flex-col lg:flex-row '>
-          <div className='columns-1 sm:columns-2 lg:columns-1 space-y-6'>
+          <div className='columns-1 sm:columns-2 lg:columns-1 space-y-9'>
             <Card title='Products' Icon={<PackageSearch />} value='+15' />
             <Card title='Categories' Icon={<Layers3 />} value='+5' />
             <Card title='Status' Icon={<Bolt />} value='+3' />

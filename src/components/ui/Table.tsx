@@ -19,7 +19,7 @@ interface TableProps {
 const Table: React.FC<TableProps> = ({ courses, deletePostMutation }) => {
   return (
     <div>
-      <div className=' p-1 md:p-6 border shadow-lg rounded-lg mt-6'>
+      <div className=' p-3  sm:p-6 border shadow-lg rounded-lg mt-6 h-[533px]'>
         <div className='flex font-bold text-xs md:text-sm cursor-pointer justify-between gap-3 border-b pb-3'>
           <div className='w-9 text-nowrap overflow-hidden text-ellipsis'>ID</div>
           <div className='w-36 text-nowrap overflow-hidden text-ellipsis'>Title</div>
