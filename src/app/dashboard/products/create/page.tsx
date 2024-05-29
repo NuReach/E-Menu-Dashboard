@@ -1,16 +1,25 @@
+import CreateProductForm from '@/components/ui/CreateProductForm'
 import Navbar from '@/components/ui/Navbar'
+import { auth, currentUser } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation';
 import React from 'react'
-import { z } from 'zod'
 
-const formSchema = z.object({
-    name: z.string().min(3).max(50),
-    
-  })
 
-export default function ProductCreatePage() {
+export default async function ProductCreatePage() {
+  const isAuth = auth();
+  if(!isAuth){
+    redirect('/');
+  }
+
   return (
     <div>
         <Navbar />
+        <div className='p-3 flex flex-col w-full justify-center items-center mb-9'>
+          <div className='w-full md:w-1/2'>
+            <h1 className='font-bold text-3xl mb-6'>Create Product</h1>
+            <CreateProductForm  />
+          </div>
+        </div>
     </div>
   )
 }
