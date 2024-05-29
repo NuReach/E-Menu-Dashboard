@@ -10,11 +10,15 @@
     "seed": "node prisma/seed.js"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.1.0",
     "@clerk/nextjs": "^5.1.2",
+    "@hookform/resolvers": "^3.4.2",
     "@prisma/client": "^5.14.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
+    "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@vercel/blob": "^0.23.3",
+    "@vercel/postgres": "^0.8.0",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -24,23 +28,29 @@
     "markdown-draft-js": "^2.4.0",
     "nanoid": "^5.0.7",
     "next": "14.2.3",
+    "next-auth": "^5.0.0-beta.18",
     "prisma": "^5.14.0",
     "react": "^18",
     "react-dom": "^18",
     "react-draft-wysiwyg": "^1.15.0",
+    "react-hook-form": "^7.51.5",
     "react-markdown": "^9.0.1",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.24.6",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "css-loader": "^7.1.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "postcss": "^8",
+    "style-loader": "^4.0.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

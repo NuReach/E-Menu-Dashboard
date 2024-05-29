@@ -5,7 +5,7 @@ import { BadgeDollarSign, Bolt, Layers3, PackageSearch } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Table from '@/components/ui/Table'
 
-export default function Page() {
+export default function Dashboard() {
   const deletePostMutation = ()=>{
 
   }
