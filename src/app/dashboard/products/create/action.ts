@@ -17,6 +17,7 @@ export async function createProductAction(formData:FormData) {
         price : Number(values.price),
         sku : String(values.sku),
         status : Boolean(values.status),
+        imageUrl : String(values.image),
         tag : String(values.tag),
         category : String(values.category),
         userId : String(user?.id)

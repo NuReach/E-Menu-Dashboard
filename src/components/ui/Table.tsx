@@ -4,6 +4,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import prisma from '@/lib/prisma';
 import { currentUser } from '@clerk/nextjs/server';
 import { ScrollArea } from './scroll-area';
+import Link from 'next/link';
 
 
 const Table = async () => {
@@ -39,7 +40,9 @@ const Table = async () => {
               <div className='w-36 text-nowrap overflow-hidden text-ellipsis'>${item.price}</div>
               <div className='w-20 text-nowrap overflow-hidden text-ellipsis hidden lg:block'>{item.discount}%</div>
               <div className='flex justify-center w-20 gap-1'>
-                <Edit />
+                <Link href={`/dashboard/products/${item.id}`}>
+                  <Edit />
+                </Link>
                 <AlertDialog>
                   <AlertDialogTrigger><Trash /></AlertDialogTrigger>
                   <AlertDialogContent>

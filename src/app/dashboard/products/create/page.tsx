@@ -1,8 +1,8 @@
-import CreateProductForm from '@/components/ui/CreateProductForm'
 import Navbar from '@/components/ui/Navbar'
 import { auth, currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation';
 import React from 'react'
+import CreateProductForm from './CreateProductForm';
 
 
 export default async function ProductCreatePage() {

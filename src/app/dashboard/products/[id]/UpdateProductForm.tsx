@@ -2,16 +2,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { any, z } from 'zod'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './form';
-import { Input } from './input';
-import { Button } from './button';
-import RichTextEditor from './RichTextEditor';
+import { z } from 'zod'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../../components/ui/form';
+import { Input } from '../../../../components/ui/input';
+import { Button } from '../../../../components/ui/button';
+import RichTextEditor from '../../../../components/ui/RichTextEditor';
 import { draftToMarkdown } from 'markdown-draft-js';
 import { createProductAction, uploadImage } from '@/app/dashboard/products/create/action';
-import { Label } from './label';
-import { toast } from './use-toast';
-import { put } from '@vercel/blob';
+import { Label } from '../../../../components/ui/label';
+import { toast } from '../../../../components/ui/use-toast';
+import { Product } from '@prisma/client';
+
 const formSchema = z.object({
     name: z.string().min(3),
     description: z.string().nullable(),
@@ -25,24 +26,27 @@ const formSchema = z.object({
     category: z.string().min(3),
   })
 
+  interface UpdateProductFormProps {
+    product: Product;
+}
 
-export default function CreateProductForm() {
+export default function UpdateProductForm( {product} : UpdateProductFormProps  ) {
 
     const [imageUrl, setImageUrl] = useState("");
 
     const form = useForm({
         resolver: zodResolver(formSchema),
-        defaultValues: {
-          name: "",
-          description: "",
-          price: "0",
-          cost: "0",
-          status: true,
-          tag: "",
-          discount: "0",
-          sku: "",
-          image: "",
-          category: "",
+        values: {
+          name:  String(product.name),
+          description:  String(product.description),
+          price: String(product.price),
+          cost:  String(product.cost),
+          status:  product.status,
+          tag:  String(product.tag) == "undefined" ? "" :String(product.tag)  , 
+          discount:  String(product.discount),
+          sku:  String(product.sku),
+          image:  String(product.imageUrl),
+          category:  String(product.category),
         },
       });
 
@@ -100,6 +104,9 @@ export default function CreateProductForm() {
     }
   return (
     <div>
+        {
+            JSON.stringify(product)
+        }
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -205,12 +212,13 @@ export default function CreateProductForm() {
                     &&
                     <p>Uploading image...</p>
                 }
-                {  imageUrl !== "" && imageUrl !== "loading" && (
+                {  
+                    product?.imageUrl !== null && 
                     <div>
                         <h2>Preview:</h2>
-                        <img src={imageUrl} alt="Preview" className='w-48 my-6'  />
+                        <img src={product?.imageUrl ? product?.imageUrl : ""} alt="Preview" className='w-48 my-6'  />
                     </div>
-                )}
+                }
                 <FormField
                     control={form.control}
                     name="description"
