@@ -30,6 +30,8 @@ export default function CreateProductForm() {
 
     const [imageFile, setImageFile] = useState<string | null>(null);
 
+    const [imageUrl, setImageUrl] = useState("");
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -57,15 +59,14 @@ export default function CreateProductForm() {
       if (file) {
         const formData = new FormData();
         formData.append("image", file);
-        const url = await uploadImage(formData);
-        setValue('image',url);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setImageFile(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        setImageFile(null);
+        try{
+            setImageUrl("loading");
+            const url = await uploadImage(formData);
+            setImageUrl(url);
+            setValue('image',url);
+        }catch( error ){
+            alert(error);
+        }
       }
     };
 
@@ -203,10 +204,15 @@ export default function CreateProductForm() {
                 onChange={handleImageChange}
                 />
                 </div>
-                {imageFile && (
+                {
+                    imageUrl == "loading"
+                    &&
+                    <p>Uploading image...</p>
+                }
+                {  imageUrl !== "" && imageUrl !== "loading" && (
                     <div>
                         <h2>Preview:</h2>
-                        <img src={imageFile} alt="Preview" className='w-48 my-6'  />
+                        <img src={imageUrl} alt="Preview" className='w-48 my-6'  />
                     </div>
                 )}
                 <FormField
