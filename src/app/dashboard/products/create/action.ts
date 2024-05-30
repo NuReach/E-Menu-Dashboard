@@ -1,12 +1,29 @@
 "use server";
+import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { put } from "@vercel/blob";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function createProductAction(formData:FormData) {
     const values = Object.fromEntries(formData.entries());
     const user = await currentUser();
-    console.log(values);
-
+    await prisma.product.create({
+      data: {
+        name : String(values.name),
+        description : String(values.description),
+        cost : Number(values.cost),
+        discount : Number(values.discount),
+        price : Number(values.price),
+        sku : String(values.sku),
+        status : Boolean(values.status),
+        tag : String(values.tag),
+        category : String(values.category),
+        userId : String(user?.id)
+      }
+    })
+    redirect(`/dashboard`);
+    revalidatePath(`/`);
 } 
 
 export async function uploadImage(formData: FormData): Promise<string> {

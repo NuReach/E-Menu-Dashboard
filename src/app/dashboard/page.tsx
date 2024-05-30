@@ -24,7 +24,7 @@ export default function Dashboard() {
               </Link>
             </div>
             <div>
-              <Table courses={[]} deletePostMutation={deletePostMutation} />
+              <Table />
             </div>
           </div>
         </div>

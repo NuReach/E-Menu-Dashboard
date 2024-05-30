@@ -28,8 +28,6 @@ const formSchema = z.object({
 
 export default function CreateProductForm() {
 
-    const [imageFile, setImageFile] = useState<string | null>(null);
-
     const [imageUrl, setImageUrl] = useState("");
 
     const form = useForm({
@@ -69,8 +67,6 @@ export default function CreateProductForm() {
         }
       }
     };
-
-
 
     useEffect(() => {
         const calculatePrice = () => {
