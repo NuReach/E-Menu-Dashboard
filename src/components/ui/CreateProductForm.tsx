@@ -2,89 +2,86 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { z } from 'zod'
+import { any, z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './form';
 import { Input } from './input';
 import { Button } from './button';
 import RichTextEditor from './RichTextEditor';
 import { draftToMarkdown } from 'markdown-draft-js';
-import { createProductAction } from '@/app/dashboard/products/create/action';
+import { createProductAction, uploadImage } from '@/app/dashboard/products/create/action';
 import { Label } from './label';
-
-
+import { toast } from './use-toast';
+import { put } from '@vercel/blob';
 const formSchema = z.object({
-    name: z.string(),
+    name: z.string().min(3),
     description: z.string().nullable(),
-    price: z.string()
-    .transform(v => parseFloat(v))
-    .refine( v => v > 0 , {message:"Price must be greater than 0"}),
-    cost: z.string()
-    .transform(v => parseFloat(v))
-    .refine( v => v > 0 , {message:"Cost must be greater than 0"}),
-    discount:  z.string()
-    .transform(v => parseFloat(v))
-    .refine( v => v >= 0 && v <= 100 , {message:"Discount must be from 0 to 100"}),
-    sku: z.string(),
+    cost : z.string().min(0),
+    discount : z.string().min(0),
+    price : z.string().min(0),
+    sku: z.string().min(3),
     status: z.boolean().default(true),
     tag: z.string().nullable(),
-    image:z.string().nullable(),
-    category: z.string().nullable(),
+    image:z.string(),
+    category: z.string().min(3),
   })
+
 
 export default function CreateProductForm() {
 
-    const [image, setImage] = useState<string | null>(null);
-
-    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setImage(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        setImage(null);
-      }
-    };
+    const [imageFile, setImageFile] = useState<string | null>(null);
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
           name: "",
           description: "",
-          price: 0.0,
-          cost: 0.0,
+          price: "0",
+          cost: "0",
           status: true,
           tag: "",
-          discount: 0.0,
+          discount: "0",
           sku: "",
-          image:"",
+          image: "",
           category: "",
         },
       });
 
-    
     const { watch, setValue } = form;
     
     const watchCost = watch("cost");
     const watchDiscount = watch("discount");
 
+    const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      console.log(file?.name);
+      if (file) {
+        const formData = new FormData();
+        formData.append("image", file);
+        const url = await uploadImage(formData);
+        setValue('image',url);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImageFile(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setImageFile(null);
+      }
+    };
+
+
+
     useEffect(() => {
         const calculatePrice = () => {
         const cost = watchCost;
         const discount = watchDiscount;
-        const price = cost - (cost * (discount / 100));
-        setValue("price", price );
+        const price = parseFloat(cost) - (parseFloat(cost) * (parseFloat(discount) / 100));
+        setValue("price", price.toString() );
         };
         calculatePrice();
     }, [watchCost, watchDiscount, setValue]);
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
-        console.log(image);
-        
-        
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
             if (typeof value === 'number' || typeof value === 'boolean') {
@@ -95,6 +92,11 @@ export default function CreateProductForm() {
         });
         try {
             await createProductAction(formData);
+            form.reset();
+            toast({
+                title: "Succesfully❤✨",
+                description: "Product is created.",
+              })
         } catch (error) {
             console.log(error);
         }     
@@ -195,16 +197,16 @@ export default function CreateProductForm() {
                     )}
                 />
                 <div className="grid w-full  gap-1.5">
-                <Label htmlFor="picture">Picture</Label>
-                <Input id="picture" type="file" className='w-full' 
+                <Label htmlFor="picture">Image</Label>
+                <Input id="image" name='image' type="file" className='w-full' 
                 accept="image/*"
                 onChange={handleImageChange}
                 />
                 </div>
-                {image && (
+                {imageFile && (
                     <div>
                         <h2>Preview:</h2>
-                        <img src={image} alt="Preview" className='w-48 my-6'  />
+                        <img src={imageFile} alt="Preview" className='w-48 my-6'  />
                     </div>
                 )}
                 <FormField

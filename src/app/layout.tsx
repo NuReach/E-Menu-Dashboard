@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,12 @@ export default function RootLayout({
   return (
     <ClerkProvider>
     <html lang="en">
-      <body className={myFont.className}>{children}</body>
+      <body className={myFont.className}>
+        <main>
+          {children}
+        </main>
+        <Toaster />
+      </body>
     </html>
     </ClerkProvider>
   );
