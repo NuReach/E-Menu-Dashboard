@@ -14,6 +14,7 @@ import { toast } from '../../../../components/ui/use-toast';
 import { Product } from '@prisma/client';
 import { ContentState, EditorState } from 'draft-js';
 import Tiptap from '../create/Tiptap';
+import { updateProductAction } from './action';
 
 const formSchema = z.object({
     name: z.string().min(3),
@@ -97,11 +98,11 @@ export default function UpdateProductForm( {product} : UpdateProductFormProps  )
             }
         });
         try {
-            await createProductAction(formData);
+            await updateProductAction(formData,product?.id);
             form.reset();
             toast({
                 title: "Succesfully❤✨",
-                description: "Product is created.",
+                description: "Product is Updated.",
               })
         } catch (error) {
             console.log(error);
