@@ -5,6 +5,7 @@ import prisma from '@/lib/prisma';
 import { currentUser } from '@clerk/nextjs/server';
 import { ScrollArea } from './scroll-area';
 import Link from 'next/link';
+import DeleteItemBtn from './DeleteItemBtn';
 
 
 const Table = async () => {
@@ -43,22 +44,7 @@ const Table = async () => {
                 <Link href={`/dashboard/products/${item.id}`}>
                   <Edit />
                 </Link>
-                <AlertDialog>
-                  <AlertDialogTrigger><Trash /></AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete your account
-                        and remove your data from our servers.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction className="bg-red-600 hover:bg-red-500">Continue</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+               <DeleteItemBtn itemId={item.id} title={"product"} />
               </div>
             </div>
           ))}
