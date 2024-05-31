@@ -24,7 +24,7 @@ export async function createProductAction(formData:FormData) {
       }
     })
     redirect(`/dashboard`);
-    revalidatePath(`/`);
+    revalidatePath(`/dashboard`);
 } 
 
 export async function uploadImage(formData: FormData): Promise<string> {

@@ -7,11 +7,13 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '../../../../components/ui/input';
 import { Button } from '../../../../components/ui/button';
 import RichTextEditor from '../../../../components/ui/RichTextEditor';
-import { draftToMarkdown } from 'markdown-draft-js';
+import { draftToMarkdown, markdownToDraft } from 'markdown-draft-js';
 import { createProductAction, uploadImage } from '@/app/dashboard/products/create/action';
 import { Label } from '../../../../components/ui/label';
 import { toast } from '../../../../components/ui/use-toast';
 import { Product } from '@prisma/client';
+import { ContentState, EditorState } from 'draft-js';
+import Tiptap from '../create/Tiptap';
 
 const formSchema = z.object({
     name: z.string().min(3),
@@ -33,6 +35,8 @@ const formSchema = z.object({
 export default function UpdateProductForm( {product} : UpdateProductFormProps  ) {
 
     const [imageUrl, setImageUrl] = useState("");
+
+     const [description , setDescription] = useState("");
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -83,6 +87,7 @@ export default function UpdateProductForm( {product} : UpdateProductFormProps  )
     }, [watchCost, watchDiscount, setValue]);
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        values.description = description;
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
             if (typeof value === 'number' || typeof value === 'boolean') {
@@ -104,9 +109,6 @@ export default function UpdateProductForm( {product} : UpdateProductFormProps  )
     }
   return (
     <div>
-        {
-            JSON.stringify(product)
-        }
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -219,7 +221,7 @@ export default function UpdateProductForm( {product} : UpdateProductFormProps  )
                         <img src={product?.imageUrl ? product?.imageUrl : ""} alt="Preview" className='w-48 my-6'  />
                     </div>
                 }
-                <FormField
+                {/* <FormField
                     control={form.control}
                     name="description"
                     render={({ field }) => (
@@ -228,12 +230,17 @@ export default function UpdateProductForm( {product} : UpdateProductFormProps  )
                         <FormControl>
                             <RichTextEditor onChange={(draft)=> field.onChange(draftToMarkdown(draft))}
                                 ref={field.ref}
+                                editorState={EditorState.createWithContent(ContentState.createFromText(field.value))}
                             />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
                     )}
-                />
+                /> */}
+                <div className="grid w-full  gap-1.5">
+                    <Label htmlFor="description">Description</Label>
+                    <Tiptap setDescription={setDescription} data={product?.description} />
+                </div>
                 <Button type="submit">Submit</Button>
             </form>
         </Form>

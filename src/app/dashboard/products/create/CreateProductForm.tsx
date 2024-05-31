@@ -11,6 +11,7 @@ import { draftToMarkdown } from 'markdown-draft-js';
 import { createProductAction, uploadImage } from '@/app/dashboard/products/create/action';
 import { Label } from '../../../../components/ui/label';
 import { toast } from '../../../../components/ui/use-toast';
+import Tiptap from './Tiptap';
 
 const formSchema = z.object({
     name: z.string().min(3),
@@ -29,6 +30,8 @@ const formSchema = z.object({
 export default function CreateProductForm() {
 
     const [imageUrl, setImageUrl] = useState("");
+
+    const [description , setDescription] = useState("");
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -78,7 +81,9 @@ export default function CreateProductForm() {
         calculatePrice();
     }, [watchCost, watchDiscount, setValue]);
 
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        values.description = description;
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
             if (typeof value === 'number' || typeof value === 'boolean') {
@@ -211,7 +216,7 @@ export default function CreateProductForm() {
                         <img src={imageUrl} alt="Preview" className='w-48 my-6'  />
                     </div>
                 )}
-                <FormField
+                {/* <FormField
                     control={form.control}
                     name="description"
                     render={({ field }) => (
@@ -225,7 +230,11 @@ export default function CreateProductForm() {
                         <FormMessage />
                     </FormItem>
                     )}
-                />
+                /> */}
+                <div className="grid w-full  gap-1.5">
+                    <Label htmlFor="description">Description</Label>
+                    <Tiptap setDescription={setDescription} data={null} />
+                </div>
                 <Button type="submit">Submit</Button>
             </form>
         </Form>
