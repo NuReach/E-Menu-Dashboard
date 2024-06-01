@@ -44,7 +44,7 @@ const Table = async () => {
                 <Link href={`/dashboard/products/${item.id}`}>
                   <Edit />
                 </Link>
-               <DeleteItemBtn itemId={item.id} title={"product"} />
+               <DeleteItemBtn itemId={item.id} title={"product"} imageUrl={item.imageUrl} />
               </div>
             </div>
           ))}

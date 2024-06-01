@@ -5,7 +5,7 @@ import { Trash } from 'lucide-react';
 import { deleteItemAction } from '@/app/dashboard/products/action';
 import { toast } from './use-toast';
 
-function DeleteItemBtn({title,itemId}:propTypes) {
+function DeleteItemBtn({title,itemId,imageUrl}:propTypes) {
   return (
     <div>
         <AlertDialog>
@@ -26,7 +26,7 @@ function DeleteItemBtn({title,itemId}:propTypes) {
                                 title: "Succesfully❤✨",
                                 description: "Product is Deleted.",
                               })    
-                            deleteItemAction(title,itemId);
+                            deleteItemAction(title,itemId,imageUrl);
                         } catch (error) {
                             console.log(error);      
                         }
@@ -40,6 +40,7 @@ function DeleteItemBtn({title,itemId}:propTypes) {
  
 interface propTypes  {
     title : string,
-    itemId : number
+    itemId : number,
+    imageUrl : string | null,
 }
 export default DeleteItemBtn;
